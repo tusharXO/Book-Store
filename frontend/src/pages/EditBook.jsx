@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 
 
-const EditBooks = () =>{
+const EditBook = () =>{
 
   const[title, setTitle] = useState('')
   const[author, setAuthor] = useState('')
   const[publishYear, setPublishYear] = useState('')
   const[loading, setLoading] = useState(false)
-  const navigation = useNavigate()
-  const { id } = useParams()
+  const navigation = useNavigate();
+  const { id } = useParams();
+
   useEffect(() => {
     setLoading(true)
     axios.get(`http://localhost:5555/books/${id}`)
@@ -27,14 +28,14 @@ const EditBooks = () =>{
     })
   }, [])
 
-  const handSaveBook = () => {
+  const handleEditBook = () => {
     const data = {
       title,
       author,
       publishYear,
     };
     setLoading(true)
-    axios.post('http://localhost:5555/books', data).then(() => {
+    axios.put(`http://localhost:5555/books/${id}`, data).then(() => {
       setLoading(false)
       navigation('/')
     }).catch((error) => {
@@ -77,7 +78,7 @@ const EditBooks = () =>{
                className="border-2 border-gray-500 px-4 py-2 w-full"
                />
               </div>
-               <button className='flex flex-col justify-center items-center p-2 bg-sky-300 m-8' onClick={handSaveBook}>
+               <button className='flex flex-col justify-center items-center p-2 bg-sky-300 m-8' onClick={handleEditBook}>
                 Save
                </button>
           </div>
@@ -85,4 +86,4 @@ const EditBooks = () =>{
   )
 }
 
-export default EditBooks
+export default EditBook
